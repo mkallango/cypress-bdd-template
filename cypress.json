@@ -1,0 +1,6 @@
+{
+  "ignoreTestFiles": "*.js",
+  "requestTimeout": 120000,
+  "responseTimeout": 120000,
+  "projectId":"QA_ArgoTest"
+}

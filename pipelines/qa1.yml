@@ -1,0 +1,107 @@
+variables:
+  appName: azuq1-br-test-dashboard
+
+schedules:
+- cron: "0 6 * * Mon-Fri"
+  displayName: Build agendado as 6 AM
+  branches:
+    include:
+    - QA1
+
+trigger:
+  branches:
+    include:
+      - QA1
+
+stages:
+- stage: Build
+  jobs:
+  - job: CYPRESS_TEST
+    pool:
+      vmImage: "ubuntu-16.04"
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "10.x"
+          displayName: "Install Node.js"
+
+      - task: CacheBeta@1
+        inputs:
+          key: npm | $(Agent.OS) | package-lock.json
+          path: /home/vsts/.npm
+          restoreKeys: npm | $(Agent.OS) | package-lock.json
+        displayName: Cache NPM packages
+
+      - task: CacheBeta@1
+        inputs:
+          key: cypress | $(Agent.OS) | package-lock.json
+          path: /home/vsts/.cache/Cypress
+          restoreKeys: cypress | $(Agent.OS) | package-lock.json
+        displayName: Cache Cypress binary
+
+      - script: npm install
+        displayName: "NPM install"
+
+      - task: CopyFiles@2
+        displayName: 'Copia Web Config'
+        inputs:
+          SourceFolder:  ./
+          Contents: 'web.config'
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+
+      - script: npm ci
+        displayName: "Install NPM dependencies"
+
+      - script: npm run cy:run:regression:qa1
+        displayName: "Cypress Tests"
+        continueOnError: yes
+
+      - script: npm run after:tests
+        displayName: "Gerar HTML Report"
+
+      - task: CopyFiles@2
+        displayName: 'Copia relatório html'
+        inputs:
+          SourceFolder:  mochawesome-report/
+          Contents: '**'
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+
+
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: $(Build.ArtifactStagingDirectory)
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: $(Build.ArtifactStagingDirectory)/*.zip
+          replaceExistingArchive: true
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: drop
+
+- stage: Deploy
+  displayName: 'QA1'
+  dependsOn: Build
+  
+  jobs:
+  - deployment: QA1
+    pool:
+      vmImage: 'ubuntu-16.04'
+    environment: QA1
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Deploy'
+            inputs:
+              azureSubscription: 'AzureDevOps-Development'
+              appName: $(appName)
+              package: $(Pipeline.Workspace)/drop/*.zip
+
+
+              
+            
+
+
