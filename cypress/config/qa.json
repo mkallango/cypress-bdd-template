@@ -1,0 +1,8 @@
+{
+  "baseUrl": "https://linkedin.com",
+  "env": {    
+    "digital": "qa1",
+    "apiUrl": "https://apiurl-if-has.net",
+    "apiKey": "0eXX7fXXd6f7409eb47f087e6a0f90e1"
+  }
+}

@@ -5,12 +5,7 @@ class Login {
     this.loginBtn = 'button[data-litms-control-urn="login-submit"]'
   }
 
-  login(email, password) {
-    this.fillFields({ email, password })
-    this.clickLogin()
-  }
-
-  fillFields({ email, password }) {
+  fillFields({ email, password }) {    
     cy.get(this.emailOrPhoneInput).should('be.visible').type(email)
     cy.get(this.passwordInput).should('be.visible').type(password)
   }
@@ -22,6 +17,11 @@ class Login {
 
   clickLogin() {
     cy.get(this.loginBtn).should('be.visible').click()
+  }
+
+  login({email, password}) {
+    this.fillFields({ email, password })
+    this.clickLogin()
   }
 }
 

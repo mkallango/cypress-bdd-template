@@ -14,19 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-require ('cypress-plugin-tab')
 import './generateCnpj'
-import './security'
-import './modal'
-import './navigations'
 import './reporter'
-import './usuarios-perfil/requests'
-import './usuarios-perfil/gerador-usuarios'
-import './usuarios-perfil/requests-perfil'
-import './cotacoes/requests'
-import './cotacoes/request-quotation'
-import './checkout/request-checkout'
-import './moderacao/request-moderation'
-import './proposta/request-proposal'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
