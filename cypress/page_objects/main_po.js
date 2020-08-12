@@ -7,3 +7,5 @@ class MainPage{
     cy.get(this.signinBtn).should('be.visible').click()
   }
 }
+
+export default new MainPage()

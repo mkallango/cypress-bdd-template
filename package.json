@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
-    "cypress": "^4.11.0",
+    "cypress": "^4.12.1",
     "cypress-cucumber-preprocessor": "^2.4.0",
     "cypress-multi-reporters": "^1.2.4",
     "mocha": "7.1.1",
@@ -21,19 +21,19 @@
     "mochawesome-report-generator": "4.1.0"
   },
   "scripts": {
-    "cyo": "npm run clean-reports | cross-env NODE_PATH=cypress cypress open --env configFile=qa1",
-    "cyr": "npm run clean-reports | cross-env NODE_PATH=cypress cypress run --env configFile=qa1",
+    "cyo": "npm run clean-reports | cross-env NODE_PATH=cypress cypress open --env configFile=qa",
+    "cyr": "npm run clean-reports | cross-env NODE_PATH=cypress cypress run --record --key=83661b7d-cd6f-46b5-9226-3c354a6b9c7e --parallel --env configFile=qa --ci-build-id=teste" ,
     "cy:tags": "npm run clean-reports | cross-env NODE_PATH=.bin cypress-tags run -e ",
-    "cy:run:regression": "npm run cy:tags -- TAGS=\"(not @waitBugFix) and @regressao\" --reporter cypress-multi-reporters --reporter-options configFile=reporter-config.json --env configFile=qa1",
-    "cy:run:smoke": "npm run cy:tags -- TAGS=\"@smoke\" --reporter cypress-multi-reporters --reporter-options configFile=reporter-config.json",
-    
+    "cy:run:regression": "npm run cy:tags -- TAGS=\"(not @waitBugFix) and @regressao\" --reporter cypress-multi-reporters --reporter-options configFile=reporter-config.json --env configFile=qa",
+    "cy:run:smoke": "npm run cy:tags -- TAGS=\"(not @waitBugFix) and @smoke\" --reporter cypress-multi-reporters --reporter-options configFile=reporter-config.json --env configFile=qa",
     "merge-report": "mochawesome-merge --reportDir mochawesome-report > mochawesome-report/report-file.json",
     "generate-report": "marge mochawesome-report/report-file.json -f \"TestResults\" -o mochawesome-report",
     "clean-reports": "rm -rf mochawesome-report | rm -rf cypress/results || true",
     "rename-files": "./rename-files.sh \"mochawesome-report/screenshots/**/**\"",
     "move-screenshots": "mv -f cypress/screenshots mochawesome-report",
     "fix-screenshots": "npm run move-screenshots && npm run rename-files",
-    "after:tests": "npm run fix-screenshots && npm run merge-report && npm run generate-report"
+    "merge-and-generate-report": "npm run merge-report && npm run generate-report",
+    "after:tests": "npm run fix-screenshots && npm run merge-and-generate-report"
   },
   "author": "Marcello Mello",
   "license": "ISC",
