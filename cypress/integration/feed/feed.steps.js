@@ -11,6 +11,7 @@ When(/^I search for "(.*)"$/,(search_string)=>{
 })
 
 Then(/^all navigation buttons shall be displayed$/, ()=>{
+  //cy.validateObjectsByKeysAreVisible(FeedHome.header.navigation)
   Object.keys(FeedHome.header.navigation).forEach((key)=>{
     cy.get(FeedHome.header.navigation[key]).should('be.visible')
   })  

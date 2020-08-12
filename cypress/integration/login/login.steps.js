@@ -8,7 +8,7 @@ import Login from '../../page_objects/login_po'
 import MainPage from '../../page_objects/main_po'
 
 Given(/^user is at LinkedIn login page$/, () => {
-  cy.visit('')
+  cy.visit('')  
   MainPage.clickOnSignIn()
 })
 
@@ -47,10 +47,12 @@ When(/^click to login$/, () => {
 
 Then(/^shall be displayed the "(.*)" main page$/, (user) => {
   cy.get('[data-control-name="identity_welcome_message"]').then($elem => {
-    expect($elem.text().trim()).to.be.eq(user)
+    let firstName = user.split(' ')[0]
+    expect($elem.text().trim()).to.contains(firstName)
   })  
 })
 
 Then(/^shall be displayed a security check$/,()=>{
-  cy.get('code#captchaInternalPath').should('exist.and.not.be.visible')
+  cy.get('#error-for-username').should('be.visible')
+  // cy.get('code#captchaInternalPath').should('exist.and.not.be.visible')
 })

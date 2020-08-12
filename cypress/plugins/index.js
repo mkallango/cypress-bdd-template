@@ -25,7 +25,7 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   on('file:preprocessor', cucumber())
   
-  const file = config.env.configFile || 'qa2'
+  const file = config.env.configFile || 'qa'
   return getConfigurationByFile(file)
 
   // `config` is the resolved Cypress config
