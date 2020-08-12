@@ -16,5 +16,6 @@
 // Import commands.js using ES2015 syntax:
 import './generateCnpj'
 import './reporter'
+import './helpers'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

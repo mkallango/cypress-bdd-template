@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   cypress:
-    image: "cypress/included:3.4.1"
+    image: "cypress/included"
     entrypoint: npm run cy:run
     environment:
       - CYPRESS_baseUrl=https://linkedin.com
